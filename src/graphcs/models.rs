@@ -44,6 +44,13 @@ impl Python{
         else if keycode.unwrap() == sdl2::keyboard::Keycode::Down {
             self.v_y += 2;
         }
+        else if keycode.unwrap() == sdl2::keyboard::Keycode::R{
+            self.head.set_x(100);
+            self.head.set_y(100);
+        }
+    }
+    pub fn print_coordnates(&self){
+        println!("Head of the snake is currently in: x: {} y: {}",self.head.x(),self.head.y());
     }
 
     pub fn copy(&self) -> Self{

@@ -40,6 +40,7 @@ fn main() -> Result<(),String> {
         // snake.set_y(snake.y() + move_vertical);
         // canvas.set_draw_color(Color::RGB(0,0,10));
         // canvas.fill_rect(snake).ok().unwrap_or_default();
+        snake.print_coordnates();
         snake.change_position();
         snake.render(&mut canvas);
         canvas.present();
