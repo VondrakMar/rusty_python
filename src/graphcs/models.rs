@@ -12,37 +12,56 @@ pub struct Python{
     pub head_color: Color
 }
 
+
 impl Python{    
-    pub fn new(x:i32,y:i32,v_x:i32,v_y:i32)->Self{
+    pub fn new(x:i32,y:i32,v_x:i32,v_y:i32,col: Color)->Self{
         Self{
             head: Rect::new(x,y,20,20),
             v_x: v_x,
             v_y: v_y,
-            head_color: Color::RGB(5,5,5)
+            head_color: col//Color::RGB(5,5,5)
         }
     }
     pub fn render(&self, canvas: &mut Canvas<Window>){
         canvas.set_draw_color(self.head_color);
         canvas.fill_rect(self.head).ok().unwrap_or_default();
     }
-    pub fn change_position(&mut self){
-        // let temp = self.copy();
-        // self.head.set_x(temp.head.x()+temp.v_x);
+    pub fn change_position(&mut self,screen_width: u32,screen_high:u32){
+        if self.head.x()+self.v_x < 0{
+            self.v_x *= -1
+        }
+        else if self.head.x()+self.v_x > screen_width as i32 {
+            self.v_x *= -1
+        }
+        else if self.head.y()+self.v_y < 0{
+            self.v_y *= -1
+        }
+        else if self.head.y()+self.v_y > screen_high as i32 {
+            self.v_y *= -1
+        }
         self.head.set_x(self.head.x()+self.v_x);
         self.head.set_y(self.head.y()+self.v_y);
     }
     pub fn change_speed(&mut self, keycode: Option<Keycode>){
         if keycode.unwrap() == sdl2::keyboard::Keycode::Right {
-            self.v_x += 2;
+            if self.v_x < 10{
+                self.v_x += 2;
+            }
         }
         else if keycode.unwrap() == sdl2::keyboard::Keycode::Left {
-            self.v_x -= 2;
+            if self.v_x > -10 {
+                self.v_x -= 2;
+            }
         }
         else if keycode.unwrap() == sdl2::keyboard::Keycode::Up {
-            self.v_y -= 2;
+            if self.v_y > -10 {
+                self.v_y -= 2;
+            }
         }
         else if keycode.unwrap() == sdl2::keyboard::Keycode::Down {
-            self.v_y += 2;
+            if self.v_y < 10{
+                self.v_y += 2;
+            }
         }
         else if keycode.unwrap() == sdl2::keyboard::Keycode::R{
             self.head.set_x(100);
@@ -50,7 +69,7 @@ impl Python{
         }
     }
     pub fn print_coordnates(&self){
-        println!("Head of the snake is currently in: x: {} y: {}",self.head.x(),self.head.y());
+        println!("Head of the snake is currently in: x: {} y: {} {} {}",self.head.x(),self.head.y(),self.v_x,self.v_y);
     }
 
     pub fn copy(&self) -> Self{
