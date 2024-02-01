@@ -7,18 +7,22 @@ use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
 pub struct Python{
     pub head: Rect,
-    pub v_x: i32,
-    pub v_y: i32,
+    pub v_x: f64,
+    pub v_y: f64,
+    pub react_x: f64,
+    pub react_y: f64,
     pub head_color: Color
 }
 
 
 impl Python{    
-    pub fn new(x:i32,y:i32,v_x:i32,v_y:i32,col: Color)->Self{
+    pub fn new(x:i32,y:i32,v_x:f64,v_y:f64,col: Color)->Self{
         Self{
             head: Rect::new(x,y,20,20),
             v_x: v_x,
             v_y: v_y,
+            react_x: x as f64,
+            react_y: y as f64,
             head_color: col//Color::RGB(5,5,5)
         }
     }
@@ -27,45 +31,59 @@ impl Python{
         canvas.fill_rect(self.head).ok().unwrap_or_default();
     }
     pub fn change_position(&mut self,screen_width: u32,screen_high:u32){
-        if self.head.x()+self.v_x < 0{
-            self.v_x *= -1
+        if self.react_x+self.v_x < 0.0{
+            self.v_x *= -1.0
         }
-        else if self.head.x()+self.v_x > screen_width as i32 {
-            self.v_x *= -1
+        else if self.react_x+self.v_x > screen_width as f64 {
+            self.v_x *= -1.0
         }
-        else if self.head.y()+self.v_y < 0{
-            self.v_y *= -1
+        else if self.react_y+self.v_y < 0.0{
+            self.v_y *= -1.0
         }
-        else if self.head.y()+self.v_y > screen_high as i32 {
-            self.v_y *= -1
+        else if self.react_y+self.v_y > screen_high as f64 {
+            self.v_y *= -1.0
         }
-        self.head.set_x(self.head.x()+self.v_x);
-        self.head.set_y(self.head.y()+self.v_y);
+        self.react_x+=self.v_x;
+        self.react_y+=self.v_y;
+        self.head.set_x((self.react_x) as i32);
+        self.head.set_y((self.react_y) as i32);
     }
     pub fn change_speed(&mut self, keycode: Option<Keycode>){
         if keycode.unwrap() == sdl2::keyboard::Keycode::Right {
-            if self.v_x < 10{
-                self.v_x += 2;
+            if self.v_x < 10.0{
+                self.v_x += 2.0;
             }
         }
         else if keycode.unwrap() == sdl2::keyboard::Keycode::Left {
-            if self.v_x > -10 {
-                self.v_x -= 2;
+            if self.v_x > -10.0 {
+                self.v_x -= 2.0;
             }
         }
         else if keycode.unwrap() == sdl2::keyboard::Keycode::Up {
-            if self.v_y > -10 {
-                self.v_y -= 2;
+            if self.v_y > -10.0 {
+                self.v_y -= 2.0;
             }
         }
         else if keycode.unwrap() == sdl2::keyboard::Keycode::Down {
-            if self.v_y < 10{
-                self.v_y += 2;
+            if self.v_y < 10.0{
+                self.v_y += 2.0;
             }
         }
         else if keycode.unwrap() == sdl2::keyboard::Keycode::R{
+            println!("Hello there");
+            self.react_x = 100.0;
             self.head.set_x(100);
+            self.react_y = 100.0;
             self.head.set_y(100);
+        }
+        else if keycode.unwrap() == sdl2::keyboard::Keycode::T{
+            println!("Hello there");
+            self.react_x = 100.0;
+            self.head.set_x(100);
+            self.v_x = 0.0;
+            self.react_y = 100.0;
+            self.head.set_y(100);
+            self.v_y = 0.0;
         }
     }
     pub fn print_coordnates(&self){
@@ -73,7 +91,7 @@ impl Python{
     }
 
     pub fn copy(&self) -> Self{
-        Self{head: self.head, v_x: self.v_x, v_y: self.v_y, head_color: self.head_color}
+        Self{head: self.head, v_x: self.v_x, v_y: self.v_y, react_x: self.react_x, react_y: self.react_y, head_color: self.head_color}
     }
 }
 
