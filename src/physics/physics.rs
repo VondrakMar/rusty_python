@@ -1,4 +1,4 @@
-use crate::graphcs::models::Python;
+use crate::graphcs::models::SpaceObject;
 
 // pub fn force_f64(planet1:&mut Python,planet2:&mut Python){
 //     let m1 = 1.0;
@@ -10,9 +10,7 @@ use crate::graphcs::models::Python;
 //     planet1.v_y -= f_y;
 // }
 
-pub fn force(planet1:&mut Python,planet2:&mut Python){
-    let m1 = 100.0;
-    let m2 = 10.0;
+pub fn force(planet1:&mut SpaceObject,planet2:&mut SpaceObject){
     let mut f_x = 0.0;
     let mut f_y = 0.0;
     let r_x = planet1.react_x-planet2.react_x;
@@ -23,7 +21,7 @@ pub fn force(planet1:&mut Python,planet2:&mut Python){
 
     if d2 > min_distance_squared{
         println!("Force activated");
-        let f = force_constant * (m1 * m2) / d2; 
+        let f = force_constant * (planet1.m * planet2.m) / d2; 
         let d = d2.sqrt(); 
         f_x = f * r_x / d;
         println!("f_x: {f_x}");
@@ -33,8 +31,8 @@ pub fn force(planet1:&mut Python,planet2:&mut Python){
         // f_y = force_constant*(m1*m2)/r_y;
     }
     println!("{f_x} {f_y}");
-    planet1.v_x -= f_x;
-    planet2.v_x += f_x;
-    planet1.v_y -= f_y;
-    planet2.v_y += f_y;
+    planet1.v_x -= f_x/planet1.m;
+    planet2.v_x += f_x/planet2.m;
+    planet1.v_y -= f_y/planet1.m;
+    planet2.v_y += f_y/planet2.m;
 }

@@ -5,24 +5,26 @@ use sdl2::sys::KeyCode;
 use sdl2::video::Window;
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
-pub struct Python{
+pub struct SpaceObject{
     pub head: Rect,
     pub v_x: f64,
     pub v_y: f64,
     pub react_x: f64,
     pub react_y: f64,
+    pub m: f64,
     pub head_color: Color
 }
 
 
-impl Python{    
-    pub fn new(x:i32,y:i32,v_x:f64,v_y:f64,col: Color)->Self{
+impl SpaceObject{    
+    pub fn new(x:i32,y:i32,v_x:f64,v_y:f64,m:f64,col: Color)->Self{
         Self{
             head: Rect::new(x,y,20,20),
             v_x: v_x,
             v_y: v_y,
             react_x: x as f64,
             react_y: y as f64,
+            m: m,
             head_color: col//Color::RGB(5,5,5)
         }
     }
@@ -69,24 +71,25 @@ impl Python{
                 self.v_y += 2.0;
             }
         }
-        else if keycode.unwrap() == sdl2::keyboard::Keycode::R{
-            println!("Hello there");
+        else if keycode.unwrap() == sdl2::keyboard::Keycode::Space{
+            self.v_x = 0.0;
+            self.v_y = 0.0;
+        }
+
+    }
+    pub fn do_restart(&mut self,keycode: Option<Keycode>){
+        if keycode.unwrap() == sdl2::keyboard::Keycode::R{
             self.react_x = 100.0;
             self.head.set_x(100);
             self.react_y = 100.0;
             self.head.set_y(100);
         }
         else if keycode.unwrap() == sdl2::keyboard::Keycode::T{
-            println!("Hello there");
             self.react_x = 100.0;
             self.head.set_x(100);
             self.v_x = 0.0;
             self.react_y = 100.0;
             self.head.set_y(100);
-            self.v_y = 0.0;
-        }
-        else if keycode.unwrap() == sdl2::keyboard::Keycode::Space{
-            self.v_x = 0.0;
             self.v_y = 0.0;
         }
     }
@@ -95,7 +98,7 @@ impl Python{
     }
 
     pub fn copy(&self) -> Self{
-        Self{head: self.head, v_x: self.v_x, v_y: self.v_y, react_x: self.react_x, react_y: self.react_y, head_color: self.head_color}
+        Self{head: self.head, v_x: self.v_x, v_y: self.v_y, react_x: self.react_x, react_y: self.react_y, m:self.m,head_color: self.head_color}
     }
 }
 
