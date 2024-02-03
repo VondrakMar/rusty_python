@@ -9,8 +9,8 @@ use graphcs::models::Python;
 mod physics;
 use physics::physics::force;
 fn main() -> Result<(),String> {
-    let screen_width = 800;
-    let screen_high = 800;
+    let screen_width = 1200;
+    let screen_high = 1200;
     let sdl_context = sdl2::init()?;
     let video_subsystem = sdl_context.video()?;
     let window = video_subsystem.window("rusty_python",screen_width,screen_high)
@@ -23,7 +23,7 @@ fn main() -> Result<(),String> {
     let mut event_pump = sdl_context.event_pump().unwrap();
     // let mut snake = Rect::new(100,100,10,10);
     let mut snake = Python::new(20,20,4.0,4.0,Color::RGB(5,5,5));
-    let mut planet = Python::new(400,400,0.0,0.0,Color::RGB(10,50,10));
+    let mut planet = Python::new(screen_width as i32/2,screen_high as i32/2,0.0,0.0,Color::RGB(10,50,10));
     'running: loop {
         canvas.clear();
         for event in event_pump.poll_iter(){

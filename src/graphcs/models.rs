@@ -85,6 +85,10 @@ impl Python{
             self.head.set_y(100);
             self.v_y = 0.0;
         }
+        else if keycode.unwrap() == sdl2::keyboard::Keycode::Space{
+            self.v_x = 0.0;
+            self.v_y = 0.0;
+        }
     }
     pub fn print_coordnates(&self){
         println!("Head of the snake is currently in: x: {} y: {} {} {}",self.head.x(),self.head.y(),self.v_x,self.v_y);

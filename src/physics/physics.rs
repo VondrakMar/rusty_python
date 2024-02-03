@@ -11,14 +11,14 @@ use crate::graphcs::models::Python;
 // }
 
 pub fn force(planet1:&mut Python,planet2:&mut Python){
-    let m1 = 1.0;
-    let m2 = 1.0;
+    let m1 = 100.0;
+    let m2 = 10.0;
     let mut f_x = 0.0;
     let mut f_y = 0.0;
     let r_x = planet1.react_x-planet2.react_x;
     let r_y = planet1.react_y-planet2.react_y;
     let d2 = r_x.powi(2) + r_y.powi(2);
-    let force_constant = 2.0;
+    let force_constant = 10.0;
     let min_distance_squared = 1e-10;
 
     if d2 > min_distance_squared{
@@ -34,5 +34,7 @@ pub fn force(planet1:&mut Python,planet2:&mut Python){
     }
     println!("{f_x} {f_y}");
     planet1.v_x -= f_x;
+    planet2.v_x += f_x;
     planet1.v_y -= f_y;
+    planet2.v_y += f_y;
 }
