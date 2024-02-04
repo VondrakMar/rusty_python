@@ -15,22 +15,18 @@ pub fn force(planet1:&mut SpaceObject,planet2:&mut SpaceObject){
     let mut f_y = 0.0;
     let r_x = planet1.react_x-planet2.react_x;
     let r_y = planet1.react_y-planet2.react_y;
-    let d2 = r_x.powi(2) + r_y.powi(2);
+    let mut d2 = r_x.powi(2) + r_y.powi(2);
     let force_constant = 10.0;
     let min_distance_squared = 1e-10;
-
+    if d2 < 10.0 {d2 = 10.0}
+    // println!("d2: {d2}");
     if d2 > min_distance_squared{
-        println!("Force activated");
         let f = force_constant * (planet1.m * planet2.m) / d2; 
         let d = d2.sqrt(); 
         f_x = f * r_x / d;
-        println!("f_x: {f_x}");
         f_y = f * r_y / d;
-        println!("f_y: {f_y}"); 
-        // f_x = force_constant*(m1*m2)/r_x;
-        // f_y = force_constant*(m1*m2)/r_y;
     }
-    println!("{f_x} {f_y}");
+    // println!("{f_x} {f_y}");
     planet1.v_x -= f_x/planet1.m;
     planet2.v_x += f_x/planet2.m;
     planet1.v_y -= f_y/planet1.m;

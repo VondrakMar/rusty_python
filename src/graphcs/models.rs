@@ -12,6 +12,7 @@ pub struct SpaceObject{
     pub react_x: f64,
     pub react_y: f64,
     pub m: f64,
+    pub frozen: bool,
     pub head_color: Color
 }
 
@@ -25,6 +26,7 @@ impl SpaceObject{
             react_x: x as f64,
             react_y: y as f64,
             m: m,
+            frozen: true,
             head_color: col//Color::RGB(5,5,5)
         }
     }
@@ -74,6 +76,7 @@ impl SpaceObject{
         else if keycode.unwrap() == sdl2::keyboard::Keycode::Space{
             self.v_x = 0.0;
             self.v_y = 0.0;
+            self.frozen = !self.frozen;
         }
 
     }
@@ -98,7 +101,14 @@ impl SpaceObject{
     }
 
     pub fn copy(&self) -> Self{
-        Self{head: self.head, v_x: self.v_x, v_y: self.v_y, react_x: self.react_x, react_y: self.react_y, m:self.m,head_color: self.head_color}
+        Self{head: self.head, 
+            v_x: self.v_x, 
+            v_y: self.v_y, 
+            react_x: self.react_x, 
+            react_y: self.react_y, 
+            m:self.m,
+            frozen: self.frozen,
+            head_color: self.head_color}
     }
 }
 
